@@ -13,6 +13,7 @@ private:
 	Vector2 size;
 	Color color;
 	bool isDestroyed;
+	bool escaped;
 
 public:
 
@@ -23,6 +24,10 @@ public:
 
 	bool IsDestroyed();
 	void SetDestroyed(bool _state);
+
+	bool IsEscaped() const;
+	void SetEscaped(bool _state);
+
 	b2Body* GetBody();
 
 

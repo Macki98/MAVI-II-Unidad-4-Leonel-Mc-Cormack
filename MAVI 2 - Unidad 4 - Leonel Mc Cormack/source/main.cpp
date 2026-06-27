@@ -6,8 +6,11 @@
 
 int main(void)
 {
-    GameController game;
-    game.RunMainLoop();
+    GameController* game = new GameController();
+    
+    game->RunMainLoop();
+
+    delete game;
 
     return 0;
 }

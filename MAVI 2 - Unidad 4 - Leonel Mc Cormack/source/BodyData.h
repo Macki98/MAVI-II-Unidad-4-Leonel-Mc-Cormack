@@ -8,7 +8,8 @@ enum class BodyTag
 	Target,
 	Player,
 	DeadZone,
-	Floor
+	Floor,
+	EnemyDeadZone
 };
 
 struct BodyData

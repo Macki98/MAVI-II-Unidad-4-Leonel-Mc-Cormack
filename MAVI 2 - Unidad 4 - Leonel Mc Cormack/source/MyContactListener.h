@@ -20,8 +20,6 @@ private:
 	// PTC: ProcessTargetCollision. Se registra el evento isDestroyed = true;
 	void PTC(BodyData* a, BodyData* b)
 	{
-		//BodyData* targetData = (a->tag == BodyTag::Target) ? a : b;
-		
 		Ball* realProjectile = reinterpret_cast<Ball*>((a->tag == BodyTag::Ball ? a : b)->objetcPtr);
 		Target* realTarget = reinterpret_cast<Target*>((a->tag == BodyTag::Target ? a : b)->objetcPtr);
 		
@@ -36,6 +34,16 @@ private:
 		Ball* realProj = reinterpret_cast<Ball*>(projData->objetcPtr);
 
 		realProj->SetDestroyed(true);
+	}
+
+	// PET: ProcessEscapeTarget. Se registra el evento escaped = true;
+	void PET(BodyData* a, BodyData* b)
+	{
+		BodyData* targetData = (a->tag == BodyTag::Target) ? a : b;
+		Target* realTarget = reinterpret_cast<Target*>(targetData->objetcPtr);
+
+		realTarget->SetDestroyed(true);
+		realTarget->SetEscaped(true);  
 	}
 
 public:
@@ -74,5 +82,11 @@ public:
 			return;
 		}
 
+		// 4. Target vs EnemyDeadZone(escapa de la pantalla por el limite izq)
+		if (CTC(dataA, dataB, BodyTag::Target, BodyTag::EnemyDeadZone)) 
+		{
+			PET(dataA, dataB);
+			return;
+		}
 	}
 };

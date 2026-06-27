@@ -72,9 +72,23 @@ void World::CreateMapBounds(float _screenWidth, float _screenHeight)
 
     offScreenBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(new BodyData{ BodyTag::DeadZone,nullptr });
 
+    // 3- DeadZone especifica para el enemigo
+    b2BodyDef eZoneDef;
+    eZoneDef.type = b2_staticBody;
+    eZoneDef.position.Set(-50.0f, _screenHeight / 2.0f);
+    b2Body* eZoneBody = world.CreateBody(&eZoneDef);
+
+    b2PolygonShape eZoneShape;
+    eZoneShape.SetAsBox(10.0f, _screenHeight / 2.0f);
+
+    b2FixtureDef eZoneFix;
+    eZoneFix.shape = &eZoneShape;
+    eZoneFix.isSensor = true;
+    eZoneBody->CreateFixture(&eZoneFix);
+
+    eZoneBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(new BodyData{ BodyTag::EnemyDeadZone, nullptr });
 }
 
-// Aqui simplemente dibujamos el piso para que el mismo este representado en el mundo
 void World::Draw()
 {
     DrawRectangle(0, GetScreenHeight() - 60, GetScreenWidth(), 40, Fade(DARKGREEN, 0.7f));

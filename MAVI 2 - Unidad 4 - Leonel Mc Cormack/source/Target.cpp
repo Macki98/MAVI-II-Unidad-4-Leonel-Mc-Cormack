@@ -6,6 +6,7 @@ Target::Target(b2World* _world, float _x, float _y, float _width, float _height,
 	size = { _width, _height };
 	color = _color;
 	isDestroyed = false;
+	escaped = false;
 
 	// 1. Definir tipo de cuerpo
 	b2BodyDef targetDef;
@@ -65,4 +66,14 @@ bool Target::IsDestroyed()
 void Target::SetDestroyed(bool _state)
 {
 	isDestroyed = _state;
+}
+
+bool Target::IsEscaped() const
+{
+	return escaped;
+}
+
+void Target::SetEscaped(bool _state)
+{
+	escaped = _state;
 }
