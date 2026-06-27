@@ -5,7 +5,15 @@
 enum class GameState
 {
 	MainMenu,
-	InGame
+	InGame,
+	EndScreen
+};
+
+struct GameResults
+{
+	int finalScore = 0;
+	int enemiesKilled = 0;
+	int totalEnemies = 0;
 };
 
 class GameController
@@ -17,6 +25,7 @@ private:
 	Menu* mainMenu;
 	Level* gameLevel;
 
+	GameResults lastResults;
 
 public:
 
@@ -28,7 +37,9 @@ public:
 	void Events();
 
 	void Update();
-	void Draw();
+	void UpdateEndScreen();
 
+	void Draw();
+	void DrawEndScreen();
 };
 

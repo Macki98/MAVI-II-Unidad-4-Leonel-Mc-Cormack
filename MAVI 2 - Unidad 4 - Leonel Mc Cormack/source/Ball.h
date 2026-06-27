@@ -19,7 +19,7 @@ public:
 	Ball(b2World* _world, float _x, float _y);
 	~Ball();
 
-	void Draw();
+	void Draw(Texture2D _tex);
 
 	void SetDestroyed(bool _state);
 	bool IsDestroyed() const;

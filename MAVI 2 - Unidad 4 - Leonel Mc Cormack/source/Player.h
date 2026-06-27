@@ -20,7 +20,7 @@ public:
 	~Player();
 
 	void Update(b2World* _world, std::vector<Ball*>& bullets);
-	void Draw();
+	void Draw(Texture2D _tex);
 
 	int GetCurrentAmmo() const;
 	int GetMaxAmmo() const;

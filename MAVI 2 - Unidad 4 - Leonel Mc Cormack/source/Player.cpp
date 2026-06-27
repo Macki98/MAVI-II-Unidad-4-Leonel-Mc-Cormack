@@ -3,7 +3,7 @@
 
 Player::Player(b2World* _world, float _x, float _y)
 {
-	size = { 20.0f,40.0f };
+	size = { 40.0f,40.0f };
 	fireForce = 9000000000.0f;
 	maxAmmo = 5;
 	currentAmmo = maxAmmo;
@@ -70,15 +70,17 @@ void Player::Update(b2World* _world, std::vector<Ball*>& bullets)
 	}
 }
 
-void Player::Draw()
+void Player::Draw(Texture2D _tex)
 {
 	b2Vec2 pos = playerBody->GetPosition();
 	float angle = playerBody->GetAngle() * RAD2DEG;
 
-	Rectangle rect = { pos.x,pos.y,size.x,size.y };
+	Rectangle dest = { pos.x,pos.y,size.x,size.y };
+	Rectangle source = { 0.0f,0.0f,(float)_tex.width,(float)_tex.height };
+
 	Vector2 origin = { size.x / 2.0f,size.y / 2.0f };
 
-	DrawRectanglePro(rect, origin, angle, DARKGRAY);
+	DrawTexturePro(_tex,source,dest,origin,angle,WHITE);
 
 	if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 	{

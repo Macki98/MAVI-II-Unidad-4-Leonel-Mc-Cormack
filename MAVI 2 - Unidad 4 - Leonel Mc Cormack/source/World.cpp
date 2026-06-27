@@ -7,6 +7,22 @@ World::World() : gravity(0.0f, 9.8f), world(gravity)
 
 World::~World()
 {
+    b2Body* bodyList = world.GetBodyList();
+        
+    while (bodyList != nullptr) 
+    {
+           
+        b2Body* next = bodyList->GetNext();
+
+        BodyData* data = reinterpret_cast<BodyData*>(bodyList->GetUserData().pointer);
+        if (data) 
+        {
+         delete data; // ¡Liberamos los bytes de la estructura!
+        }
+
+        bodyList = next;
+        
+    }
 }
 
 // En este metodo determinamos como calcular el estado del sistema

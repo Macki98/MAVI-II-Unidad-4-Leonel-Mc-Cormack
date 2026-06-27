@@ -44,7 +44,7 @@ Target::~Target()
 
 }
 
-void Target::Draw()
+void Target::Draw(Texture2D _tex)
 {
 
 	if (isDestroyed || escaped) return;
@@ -52,10 +52,12 @@ void Target::Draw()
 	b2Vec2 pos = targetBody->GetPosition();
 	float angle = targetBody->GetAngle() * RAD2DEG;
 
-	Rectangle rect = { pos.x,pos.y, size.x, size.y };
+	Rectangle dest = { pos.x,pos.y, size.x, size.y };
+	Rectangle source = { 0.0f,0.0f, (float)_tex.width, (float)_tex.height };
+
 	Vector2 origin = { size.x / 2.0f, size.y / 2.0f };
 
-	DrawRectanglePro(rect, origin, angle, color);
+	DrawTexturePro(_tex, source, dest, origin, angle, WHITE);
 
 }
 

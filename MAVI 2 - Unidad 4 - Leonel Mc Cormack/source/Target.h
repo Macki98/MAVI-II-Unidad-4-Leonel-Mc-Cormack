@@ -20,7 +20,7 @@ public:
 	Target(b2World* _world, float _x, float _y, float _width, float _height, Color _color );
 	~Target();
 
-	void Draw();
+	void Draw(Texture2D _tex);
 
 	bool IsDestroyed() const;
 	void SetDestroyed(bool _state);

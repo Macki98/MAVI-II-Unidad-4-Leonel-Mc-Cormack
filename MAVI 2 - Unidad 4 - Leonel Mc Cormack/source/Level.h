@@ -36,9 +36,14 @@ private:
 	float intervalSpawn;
 	int totalTargets;
 	int enemiesSpawned;
+	int enemiesKilled;
 
 	float reloadTimer;
 	float reloadTime;
+
+	Texture2D playerTex;
+	Texture2D bulletTex;
+	Texture2D enemyTex;
 
 	Color background = { 110, 100, 215, 255 };
 
@@ -55,6 +60,10 @@ public:
 	void CleanEnemiesAndProjectiles();
 
 	bool IsFinished() const;
+
+	int GetScore() const;
+	int GetTotalEnemies() const;
+	int GetEnemiesKilled() const;
 
 };
 

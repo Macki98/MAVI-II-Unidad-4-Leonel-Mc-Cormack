@@ -46,15 +46,19 @@ Ball::~Ball()
 	ballBody->GetWorld()->DestroyBody(ballBody);
 }
 
-void Ball::Draw()
+void Ball::Draw(Texture2D _tex)
 {
 
 	b2Vec2 pos = ballBody->GetPosition();
 	float angle = ballBody->GetAngle() * RAD2DEG;
 
-	DrawCircle(pos.x, pos.y, radius, color);
-	
-	DrawLine(pos.x, pos.y, pos.x + cos(angle) * radius, pos.y + sin(angle) * radius, BLACK);
+	Rectangle source = { 0.0f,0.0f,(float)_tex.width, (float)_tex.height };
+	Rectangle dest = { pos.x,pos.y, radius * 2, radius * 2 };
+
+	Vector2 origin = { radius,radius };
+
+	DrawTexturePro(_tex, source, dest, origin, angle, WHITE);
+
 }
 
 void Ball::SetDestroyed(bool _state)

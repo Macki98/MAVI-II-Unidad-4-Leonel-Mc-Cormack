@@ -5,7 +5,7 @@ Level::Level(float _screenWidth, float _screenHeight)
 {
 	isFinished = false;
 	score = 0;
-
+	enemiesKilled = 0;
 	spawnTimer = 0.0f;
 	intervalSpawn = 3.5f;
 	totalTargets = 20;
@@ -13,6 +13,10 @@ Level::Level(float _screenWidth, float _screenHeight)
 
 	reloadTimer = 0.0f;
 	reloadTime = 5.0f;
+
+	playerTex = LoadTexture("Assets/player.png");
+	bulletTex = LoadTexture("Assets/projectile.png");
+	enemyTex = LoadTexture("Assets/enemy.png");
 
 	// Creamos el mundo
 	physicsWorld = new World;
@@ -40,6 +44,10 @@ Level::~Level()
 	{
 		physicsWorld->GetB2World()->SetContactListener(nullptr);
 	}
+
+	UnloadTexture(playerTex);
+	UnloadTexture(bulletTex);
+	UnloadTexture(enemyTex);
 
 	delete contactListener;
 	delete physicsWorld;
@@ -76,7 +84,7 @@ void Level::Update()
 		break;
 
 		case GameplayState::Victory:
-			
+
 			isFinished = true;
 		break;
 	}
@@ -96,16 +104,16 @@ void Level::Draw()
 
 	physicsWorld->Draw();
 
-	if (player) player->Draw();
+	if (player) player->Draw(playerTex);
 
 	for (Ball* b : bullets)
 	{
-		b->Draw();
+		b->Draw(bulletTex);
 	}
 
 	for (Target* t : targets)
 	{
-		t->Draw();
+		t->Draw(enemyTex);
 	}
 	
 	DrawText(TextFormat("SCORE: %05d", score), 20, 20, 25, DARKGRAY);
@@ -113,11 +121,11 @@ void Level::Draw()
 
 	if (currentState == GameplayState::Reloading)
 	{
-		DrawText("RELOADING...", 20, GetScreenHeight() - 40, 25, RED);
+		DrawText("RELOADING...", 20, GetScreenHeight() - 45, 25, RED);
 	}
 	else if (player) 
 	{
-		DrawText(TextFormat("AMMO: %d / %d", player->GetCurrentAmmo(), player->GetMaxAmmo()), 20, GetScreenHeight() - 40, 25, DARKGRAY);
+		DrawText(TextFormat("AMMO: %d / %d", player->GetCurrentAmmo(), player->GetMaxAmmo()), 20, GetScreenHeight() - 45, 25, DARKGRAY);
 	}
 
 }
@@ -143,7 +151,7 @@ void Level::SpawnEnemies()
 		float randomY = (float)GetRandomValue(80, (float)GetScreenHeight() * 0.75f);
 		float spawnX = (float)GetScreenWidth() + 40.0f;
 
-		Target* enemy = new Target(physicsWorld->GetB2World(), spawnX, randomY, 40.0f, 40.0f, RED);
+		Target* enemy = new Target(physicsWorld->GetB2World(), spawnX, randomY, 40.0f, 60.0f, RED);
 
 		targets.push_back(enemy);
 		enemiesSpawned++;
@@ -174,7 +182,8 @@ void Level::CleanEnemiesAndProjectiles()
 			if (!targets[i]->IsEscaped())
 			{
 				std::cout << "Target Impactado" << std::endl;
-				score += 10;
+				enemiesKilled++;
+				score += 100;
 			}
 			else
 			{
@@ -191,4 +200,19 @@ void Level::CleanEnemiesAndProjectiles()
 bool Level::IsFinished() const
 {
 	return isFinished;
+}
+
+int Level::GetScore() const
+{
+	return score;
+}
+
+int Level::GetTotalEnemies() const
+{
+	return totalTargets;
+}
+
+int Level::GetEnemiesKilled() const
+{
+	return enemiesKilled;
 }
