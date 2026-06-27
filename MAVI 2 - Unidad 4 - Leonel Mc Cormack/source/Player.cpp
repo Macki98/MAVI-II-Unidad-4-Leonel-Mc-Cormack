@@ -3,7 +3,7 @@
 
 Player::Player(b2World* _world, float _x, float _y)
 {
-	size = { 40.0f,40.0f };
+	size = { 70.0f,70.0f };
 	fireForce = 9000000000.0f;
 	maxAmmo = 5;
 	currentAmmo = maxAmmo;

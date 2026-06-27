@@ -8,7 +8,7 @@ Ball::Ball(b2World* _world, float _x, float _y)
 {
 	isDestroyed = false;
 
-	radius = 5.0f;
+	radius = 10.0f;
 	color = Fade(SKYBLUE, 0.95f);
 
 	// 1. Definir tipo de cuerpo

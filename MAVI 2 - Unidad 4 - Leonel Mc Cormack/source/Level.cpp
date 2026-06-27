@@ -31,6 +31,7 @@ Level::Level(float _screenWidth, float _screenHeight)
 
 	player = new Player(physicsWorld->GetB2World(), 50.0f, 500.0f);
 
+	HideCursor();
 }
 
 Level::~Level()
@@ -151,7 +152,7 @@ void Level::SpawnEnemies()
 		float randomY = (float)GetRandomValue(80, (float)GetScreenHeight() * 0.75f);
 		float spawnX = (float)GetScreenWidth() + 40.0f;
 
-		Target* enemy = new Target(physicsWorld->GetB2World(), spawnX, randomY, 40.0f, 60.0f, RED);
+		Target* enemy = new Target(physicsWorld->GetB2World(), spawnX, randomY, 50.0f, 70.0f, RED);
 
 		targets.push_back(enemy);
 		enemiesSpawned++;
