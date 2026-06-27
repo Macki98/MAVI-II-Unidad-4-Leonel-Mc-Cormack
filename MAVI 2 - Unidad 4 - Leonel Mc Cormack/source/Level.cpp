@@ -11,6 +11,9 @@ Level::Level(float _screenWidth, float _screenHeight)
 	totalTargets = 20;
 	enemiesSpawned = 0;
 
+	reloadTimer = 0.0f;
+	reloadTime = 5.0f;
+
 	// Creamos el mundo
 	physicsWorld = new World;
 
@@ -45,28 +48,45 @@ Level::~Level()
 void Level::Update()
 {
 	physicsWorld->Update();
-
-	player->Update(physicsWorld->GetB2World(), bullets);
-
-	if (enemiesSpawned < totalTargets)
-	{
-		spawnTimer += GetFrameTime();
-		
-		if (spawnTimer >= intervalSpawn)
-		{
-			SpawnEnemies();
-			spawnTimer = 0.0f;
-		}
-	}
+	SpawnTimer();
 
 	CleanEnemiesAndProjectiles();
 
-	/*
+	switch (currentState)
+	{
+		case GameplayState::Playing:
+
+			if (player) player->Update(physicsWorld->GetB2World(), bullets);
+			if (player && player->GetCurrentAmmo() == 0)
+			{
+				currentState = GameplayState::Reloading;
+				reloadTimer = 0.0f;
+			}
+		break;
+
+		case GameplayState::Reloading:
+
+			reloadTimer += GetFrameTime();
+
+			if (reloadTimer >= reloadTime)
+			{
+				player->ResetAmmo();
+				currentState = GameplayState::Playing;
+			}
+		break;
+
+		case GameplayState::Victory:
+			
+			isFinished = true;
+		break;
+	}
+
+	
 	if (enemiesSpawned >= totalTargets && targets.empty())
 	{
-		isFinished = true;
+		currentState = GameplayState::Victory;
 	}
-	*/
+
 }
 
 void Level::Draw()
@@ -76,7 +96,7 @@ void Level::Draw()
 
 	physicsWorld->Draw();
 
-	player->Draw();
+	if (player) player->Draw();
 
 	for (Ball* b : bullets)
 	{
@@ -87,12 +107,33 @@ void Level::Draw()
 	{
 		t->Draw();
 	}
-
 	
 	DrawText(TextFormat("SCORE: %05d", score), 20, 20, 25, DARKGRAY);
-
 	DrawText(TextFormat("TARGETS: %d", targets.size()), GetScreenWidth() - 160, 20, 25, MAROON);
 
+	if (currentState == GameplayState::Reloading)
+	{
+		DrawText("RELOADING...", 20, GetScreenHeight() - 40, 25, RED);
+	}
+	else if (player) 
+	{
+		DrawText(TextFormat("AMMO: %d / %d", player->GetCurrentAmmo(), player->GetMaxAmmo()), 20, GetScreenHeight() - 40, 25, DARKGRAY);
+	}
+
+}
+
+void Level::SpawnTimer()
+{
+	if (enemiesSpawned < totalTargets)
+	{
+		spawnTimer += GetFrameTime();
+
+		if (spawnTimer >= intervalSpawn)
+		{
+			SpawnEnemies();
+			spawnTimer = 0.0f;
+		}
+	}
 }
 
 void Level::SpawnEnemies()

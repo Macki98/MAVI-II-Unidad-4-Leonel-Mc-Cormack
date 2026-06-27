@@ -5,6 +5,8 @@ Player::Player(b2World* _world, float _x, float _y)
 {
 	size = { 20.0f,40.0f };
 	fireForce = 9000000000.0f;
+	maxAmmo = 5;
+	currentAmmo = maxAmmo;
 
 	// 1. Definir el tipo de cuerpo
 	b2BodyDef playerDef;
@@ -52,7 +54,7 @@ void Player::Update(b2World* _world, std::vector<Ball*>& bullets)
 		dir.y /= large;
 	}
 
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && currentAmmo > 0)
 	{
 		float spawnX = playerPos.x + dir.x * 25.0f;
 		float spawnY = playerPos.y + dir.y * 25.0f;
@@ -63,6 +65,8 @@ void Player::Update(b2World* _world, std::vector<Ball*>& bullets)
 		newBullet->GetBody()->ApplyLinearImpulseToCenter(impulse, true);
 		
 		bullets.push_back(newBullet);
+
+		Shoot();
 	}
 }
 
@@ -81,5 +85,28 @@ void Player::Draw()
 		Vector2 mousePos = GetMousePosition();
 		DrawLine(pos.x, pos.y, mousePos.x, mousePos.y, RED);
 		DrawCircleV(mousePos, 5.0f, RED);
+	}
+}
+
+int Player::GetCurrentAmmo() const
+{
+	return currentAmmo;
+}
+
+int Player::GetMaxAmmo() const
+{
+	return maxAmmo;
+}
+
+void Player::ResetAmmo()
+{
+	currentAmmo = maxAmmo;
+}
+
+void Player::Shoot()
+{
+	if (currentAmmo > 0)
+	{
+		currentAmmo--;
 	}
 }

@@ -11,6 +11,8 @@ private:
 	b2Body* playerBody;
 	Vector2 size;
 	
+	int maxAmmo;
+	int currentAmmo;
 	float fireForce;
 
 public:
@@ -20,6 +22,10 @@ public:
 	void Update(b2World* _world, std::vector<Ball*>& bullets);
 	void Draw();
 
-	Vector2 GetPosition();
+	int GetCurrentAmmo() const;
+	int GetMaxAmmo() const;
+	void ResetAmmo();
+
+	void Shoot();
 };
 

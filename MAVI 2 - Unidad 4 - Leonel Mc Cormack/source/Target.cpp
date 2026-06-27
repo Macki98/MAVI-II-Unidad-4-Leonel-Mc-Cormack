@@ -10,7 +10,7 @@ Target::Target(b2World* _world, float _x, float _y, float _width, float _height,
 
 	// 1. Definir tipo de cuerpo
 	b2BodyDef targetDef;
-	targetDef.type = b2_dynamicBody;
+	targetDef.type = b2_kinematicBody;
 	targetDef.position.Set(_x, _y);
 	targetBody = _world->CreateBody(&targetDef);
 
@@ -26,6 +26,7 @@ Target::Target(b2World* _world, float _x, float _y, float _width, float _height,
 	targetFixture.restitution = 0.0f;
 	targetBody->CreateFixture(&targetFixture);
 
+	targetBody->SetLinearVelocity(b2Vec2(-9000000000.0f, 0.0f));
 	// 4. Data
 	BodyData* data = new BodyData();
 	data->tag = BodyTag::Target;
@@ -46,7 +47,7 @@ Target::~Target()
 void Target::Draw()
 {
 
-	if (isDestroyed) return;
+	if (isDestroyed || escaped) return;
 
 	b2Vec2 pos = targetBody->GetPosition();
 	float angle = targetBody->GetAngle() * RAD2DEG;
@@ -58,7 +59,7 @@ void Target::Draw()
 
 }
 
-bool Target::IsDestroyed()
+bool Target::IsDestroyed() const
 {
 	return isDestroyed;
 }

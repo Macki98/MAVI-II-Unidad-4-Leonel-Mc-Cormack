@@ -74,8 +74,9 @@ void World::CreateMapBounds(float _screenWidth, float _screenHeight)
 
     // 3- DeadZone especifica para el enemigo
     b2BodyDef eZoneDef;
-    eZoneDef.type = b2_staticBody;
+    eZoneDef.type = b2_dynamicBody;
     eZoneDef.position.Set(-50.0f, _screenHeight / 2.0f);
+    eZoneDef.gravityScale = 0.0f;
     b2Body* eZoneBody = world.CreateBody(&eZoneDef);
 
     b2PolygonShape eZoneShape;

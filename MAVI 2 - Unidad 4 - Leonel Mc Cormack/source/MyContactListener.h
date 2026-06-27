@@ -43,7 +43,9 @@ private:
 		Target* realTarget = reinterpret_cast<Target*>(targetData->objetcPtr);
 
 		realTarget->SetDestroyed(true);
-		realTarget->SetEscaped(true);  
+		realTarget->SetEscaped(true);
+		
+		 
 	}
 
 public:

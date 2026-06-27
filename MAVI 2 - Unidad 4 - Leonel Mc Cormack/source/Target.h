@@ -22,7 +22,7 @@ public:
 
 	void Draw();
 
-	bool IsDestroyed();
+	bool IsDestroyed() const;
 	void SetDestroyed(bool _state);
 
 	bool IsEscaped() const;

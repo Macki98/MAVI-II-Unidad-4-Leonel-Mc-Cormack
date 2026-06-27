@@ -8,13 +8,21 @@
 #include "Target.h"
 #include "Player.h"
 
+enum class GameplayState
+{
+	Playing,
+	Reloading,
+	Victory
+};
+
 class Level
 {
 private:
 
+	GameplayState currentState;
+
 	World* physicsWorld;
 	MyContactListener* contactListener;
-
 
 	Player* player;
 	std::vector<Ball*> bullets;
@@ -29,6 +37,9 @@ private:
 	int totalTargets;
 	int enemiesSpawned;
 
+	float reloadTimer;
+	float reloadTime;
+
 	Color background = { 110, 100, 215, 255 };
 
 public:
@@ -39,6 +50,7 @@ public:
 	void Update();
 	void Draw();
 
+	void SpawnTimer();
 	void SpawnEnemies();
 	void CleanEnemiesAndProjectiles();
 
